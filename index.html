@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Layar iPhone Fullscreen</title>
+<style>
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  background: #e5e5e5;
+  font-family: Arial, sans-serif;
+}
+.iphone {
+  width: 300px;
+  height: 600px;
+  background: url('wallpaper.jpg') no-repeat center center;
+  background-size: cover;
+  border-radius: 40px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.3);
+  border: 6px solid black;
+  position: relative;
+  overflow: hidden;
+}
+.camera {
+  width: 12px;
+  height: 12px;
+  background: #111;
+  border-radius: 50%;
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+}
+.apps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+  padding: 60px 20px;
+  z-index: 1;
+  position: relative;
+}
+.app {
+  width: 55px;
+  height: 55px;
+  background: rgba(255,255,255,0.8);
+  border-radius: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  color: #333;
+  cursor: pointer;
+  transition: transform 0.2s;
+  overflow: hidden;
+}
+.app:hover { transform: scale(1.1); }
+.app img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 15px;
+}
+.app-screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: white;
+  display: none;
+  flex-direction: column;
+  z-index: 2;
+  padding: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+  justify-content: center;
+  align-items: center;
+}
+#appContent {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow-y: auto;
+}
+#appContent img,
+#appContent video {
+  max-width: 85%;
+  max-height: 65%;
+  object-fit: contain;
+  border-radius: 15px;
+}
+audio {
+  width: 90%;
+  margin-top: 20px;
+}
+.gesture-bar {
+  width: 80px;
+  height: 5px;
+  background: #444;
+  border-radius: 5px;
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  cursor: pointer;
+  z-index: 3;
+}
+button {
+  margin: 5px;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background: #007bff;
+  color: white;
+}
+button:hover { background: #0056b3; }
+
+@keyframes openAppAnim {
+  0% { transform: scale(0.95); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+@keyframes closeAppAnim {
+  0% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(0.95); opacity: 0; }
+}
+</style>
+</head>
+<body>
+<div class="iphone">
+  <div class="camera"></div>
+  <div class="apps" id="appsGrid">
+    <div class="app" onclick="openMyPhotoApp()">📞</div>
+    <div class="app" onclick="openPhotoIconApp()">💬</div>
+    <div class="app" onclick="openPhotoApp()">📷</div>
+    <div class="app" onclick="openMusicApp()">🎵</div>
+    <div class="app" onclick="openVideoApp()">🌐</div>
+    <div class="app" onclick="openVideoApp2()">🎶</div>
+    <div class="app" onclick="openPhotoApp2()">📸</div>
+    <div class="app" onclick="openVideoAppYT()">▶️</div>
+    <div class="app" onclick="openBeeVideoApp()">💬📱</div>
+    <div class="app" onclick="openQuizApp()">📝</div>
+  </div>
+
+  <div id="appScreen" class="app-screen">
+    <div id="appContent"></div>
+    <div class="gesture-bar" onclick="closeApp()"></div>
+  </div>
+</div>
+
+<script>
+const appScreen = document.getElementById('appScreen');
+const appContent = document.getElementById('appContent');
+const appsGrid = document.getElementById('appsGrid');
+
+function showAppScreen() {
+  appScreen.style.display = "flex";
+  appScreen.style.animation = "openAppAnim 0.25s ease forwards";
+}
+
+// 📞 icon tampil my_foto.jpg
+function openMyPhotoApp() {
+  appContent.innerHTML = `<img src="my_foto.jpg">`;
+  appsGrid.style.display = "none";
+  showAppScreen();
+}
+
+// 💬 icon tampil foto.jpg
+function openPhotoIconApp() {
+  appContent.innerHTML = `<img src="fto.jpg">`;
+  appsGrid.style.display = "none";
+  showAppScreen();
+}
+
+function openPhotoApp() {
+  appContent.innerHTML = `<img src="kamera.jpg">`;
+  appsGrid.style.display = "none";
+  showAppScreen();
+}
+
+function openPhotoApp2() {
+  appContent.innerHTML = `<img src="foto.jpg">`;
+  appsGrid.style.display = "none";
+  showAppScreen();
+}
+
+function openMusicApp() {
+  appContent.innerHTML = `
+    <h3>Musik Player</h3>
+    <audio controls autoplay loop>
+      <source src="musik.mp3" type="audio/mpeg">
+    </audio>
+  `;
+  appsGrid.style.display = "none";
+  showAppScreen();
+}
+
+function openVideoApp() {
+  appContent.innerHTML = `<video controls autoplay><source src="video.mp4" type="video/mp4"></video>`;
+  appsGrid.style.display = "none";
+  showAppScreen();
+}
+
+function openVideoApp2() {
+  appContent.innerHTML = `<video controls autoplay><source src="video_kamu.mp4" type="video/mp4"></video>`;
+  appsGrid.style.display = "none";
+  showAppScreen();
+}
+
+function openVideoAppYT() {
+  appContent.innerHTML = `<video controls autoplay><source src="video2.mp4" type="video/mp4"></video>`;
+  appsGrid.style.display = "none";
+  showAppScreen();
+}
+
+// 💬📱 icon tampil video_lebah.mp4
+function openBeeVideoApp() {
+  appContent.innerHTML = `<video controls autoplay><source src="video_lebah.mp4" type="video/mp4"></video>`;
+  appsGrid.style.display = "none";
+  showAppScreen();
+}
+
+// KUIS 10 soal tentang isi komputer
+const quizData = [
+  { q: "1. Komponen apa yang disebut otaknya komputer?", options: ["A. RAM","B. CPU","C. GPU","D. Harddisk"], a: "B" },
+  { q: "2. Apa fungsi RAM dalam komputer?", options: ["A. Penyimpanan sementara","B. Proses grafis","C. Menyimpan data permanen","D. Menjalankan sistem operasi"], a: "A" },
+  { q: "3. Apa fungsi GPU?", options: ["A. Memproses grafis","B. Menyimpan data","C. Menjalankan program","D. Menghubungkan internet"], a: "A" },
+  { q: "4. Komponen untuk menyimpan data permanen?", options: ["A. RAM","B. CPU","C. Harddisk/SSD","D. GPU"], a: "C" },
+  { q: "5. Perangkat yang digunakan untuk input gambar?", options: ["A. Keyboard","B. Mouse","C. Kamera","D. Monitor"], a: "C" },
+  { q: "6. Fungsi motherboard?", options: ["A. Menyimpan foto","B. Menghubungkan semua komponen","C. Memproses grafis","D. Menyimpan musik"], a: "B" },
+  { q: "7. Komponen untuk output suara?", options: ["A. Speaker","B. Microphone","C. Keyboard","D. Monitor"], a: "A" },
+  { q: "8. Fungsi power supply?", options: ["A. Menyimpan data","B. Memberi daya listrik","C. Memproses gambar","D. Menjalankan sistem operasi"], a: "B" },
+  { q: "9. Komponen yang menampilkan visual ke layar?", options: ["A. Monitor","B. CPU","C. RAM","D. GPU"], a: "A" },
+  { q: "10. Fungsi sistem operasi?", options: ["A. Mengatur perangkat keras & software","B. Menyimpan file","C. Memproses grafis","D. Menyediakan jaringan"], a: "A" }
+];
+
+let currentQuiz = 0, score = 0, answersGiven = [];
+
+function openQuizApp() {
+  currentQuiz = 0; score = 0; answersGiven = [];
+  showQuestion();
+  appsGrid.style.display = "none";
+  showAppScreen();
+}
+
+function showQuestion() {
+  if (currentQuiz < quizData.length) {
+    const q = quizData[currentQuiz];
+    appContent.innerHTML = `
+      <div style="padding:20px 15px;width:90%;height:auto;overflow-y:auto;text-align:center;">
+        <h3>${q.q}</h3>
+        ${q.options.map(opt=>`<button onclick="checkAnswer('${opt.charAt(0)}')">${opt}</button>`).join("")}
+        <p>Soal ${currentQuiz+1} dari ${quizData.length}</p>
+      </div>`;
+  } else {
+    let resultHTML = `<h2 style="margin:auto;">Kuis Selesai!</h2>`;
+    resultHTML += `<p>Skor kamu: ${score}/${quizData.length}</p>`;
+    resultHTML += `<ul>`;
+    answersGiven.forEach((item,i)=>{
+      resultHTML += `<li>Soal ${i+1}: Jawaban benar ${quizData[i].a}, Jawaban kamu ${item}</li>`;
+    });
+    resultHTML += `</ul>`;
+    appContent.innerHTML = resultHTML;
+  }
+}
+
+function checkAnswer(answer) {
+  answersGiven.push(answer);
+  if (answer===quizData[currentQuiz].a) score++;
+  currentQuiz++; 
+  showQuestion();
+}
+
+function closeApp() {
+  appScreen.style.animation = "closeAppAnim 0.25s ease forwards";
+  setTimeout(()=>{
+    appScreen.style.display="none";
+    appsGrid.style.display="grid";
+    appContent.innerHTML="";
+  },250);
+}
+</script>
+</body>
+</html>
